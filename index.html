@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Student Registration System</title>
+
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<div class="top-bar">
+  <h2>🎓 Student System</h2>
+  <button class="toggle-btn" onclick="toggleDarkMode()">🌙</button>
+</div>
+
+<header>
+  <h1>Student Registration System</h1>
+  <p>Advanced system with search, sort, export & dark mode</p>
+</header>
+
+<div class="container">
+
+  <!-- FORM -->
+  <form id="studentForm">
+    <input type="text" id="name" placeholder="Student Name">
+    <input type="text" id="studentId" placeholder="Student ID">
+    <input type="email" id="email" placeholder="Email">
+    <input type="text" id="contact" placeholder="Contact Number">
+    <button type="submit">Add Student</button>
+  </form>
+
+  <!-- TABLE -->
+  <div class="table-container">
+
+    <div class="controls">
+      <input type="text" id="search" placeholder="🔍 Search student...">
+
+      <select id="sort">
+        <option value="">Sort By</option>
+        <option value="nameAsc">Name ↑</option>
+        <option value="nameDesc">Name ↓</option>
+        <option value="idAsc">ID ↑</option>
+        <option value="idDesc">ID ↓</option>
+      </select>
+
+      <button onclick="downloadCSV()">📥 Export</button>
+    </div>
+
+    <div class="scrollable">
+      <table>
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>ID</th>
+            <th>Email</th>
+            <th>Contact</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody id="studentTable"></tbody>
+      </table>
+    </div>
+
+  </div>
+
+</div>
+
+<!-- Toast -->
+<div id="toast"></div>
+
+<script src="script.js"></script>
+</body>
+</html>
