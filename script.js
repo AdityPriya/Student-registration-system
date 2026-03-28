@@ -3,9 +3,16 @@ const table = document.getElementById('studentTable');
 const searchInput = document.getElementById('search');
 const sortSelect = document.getElementById('sort');
 
+// Correct input references
+const nameInput = document.getElementById('name');
+const studentIdInput = document.getElementById('studentId');
+const emailInput = document.getElementById('email');
+const contactInput = document.getElementById('contact');
+
 let students = JSON.parse(localStorage.getItem('students')) || [];
 let editIndex = null;
 
+/* Save Data */
 function saveData() {
   localStorage.setItem('students', JSON.stringify(students));
 }
@@ -18,13 +25,15 @@ function showToast(msg) {
   setTimeout(() => toast.classList.remove('show'), 2000);
 }
 
-/* Render */
+/* Render Table */
 function renderTable() {
   let filtered = [...students];
 
+  // Search
   const search = searchInput.value.toLowerCase();
   filtered = filtered.filter(s => s.name.toLowerCase().includes(search));
 
+  // Sort
   const sort = sortSelect.value;
   if (sort === 'nameAsc') filtered.sort((a,b)=>a.name.localeCompare(b.name));
   if (sort === 'nameDesc') filtered.sort((a,b)=>b.name.localeCompare(a.name));
@@ -51,18 +60,18 @@ function renderTable() {
 /* Validation */
 function validate(name, id, email, contact) {
   if (!/^[A-Za-z ]+$/.test(name)) return showToast("Invalid Name");
-  if (!/^[0-9]+$/.test(id)) return showToast("ID must be number");
-  if (!/^[0-9]{10,}$/.test(contact)) return showToast("Invalid Contact");
+  if (!/^[0-9]+$/.test(id)) return showToast("ID must be numbers");
+  if (!/^[0-9]{10,}$/.test(contact)) return showToast("Contact must be at least 10 digits");
   if (!email.includes('@')) return showToast("Invalid Email");
   return true;
 }
 
-/* Add/Edit */
+/* Add / Edit */
 form.addEventListener('submit', function(e) {
   e.preventDefault();
 
   const name = nameInput.value.trim();
-  const id = studentId.value.trim();
+  const id = studentIdInput.value.trim();
   const email = emailInput.value.trim();
   const contact = contactInput.value.trim();
 
@@ -94,7 +103,7 @@ function deleteStudent(index) {
   students.splice(index, 1);
   saveData();
   renderTable();
-  showToast("Deleted");
+  showToast("Student Deleted");
 }
 
 /* Edit */
@@ -102,7 +111,7 @@ function editStudent(index) {
   const s = students[index];
 
   nameInput.value = s.name;
-  studentId.value = s.id;
+  studentIdInput.value = s.id;
   emailInput.value = s.email;
   contactInput.value = s.contact;
 
@@ -116,6 +125,7 @@ sortSelect.addEventListener('change', renderTable);
 /* CSV Export */
 function downloadCSV() {
   let csv = "Name,ID,Email,Contact\n";
+
   students.forEach(s => {
     csv += `${s.name},${s.id},${s.email},${s.contact}\n`;
   });
@@ -128,7 +138,7 @@ function downloadCSV() {
   a.download = "students.csv";
   a.click();
 
-  showToast("Downloaded CSV");
+  showToast("CSV Downloaded");
 }
 
 /* Dark Mode */
@@ -136,5 +146,5 @@ function toggleDarkMode() {
   document.body.classList.toggle('dark');
 }
 
-/* Init */
+/* Initial Load */
 renderTable();
